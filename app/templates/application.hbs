@@ -51,7 +51,11 @@ we are creating on the DOM
         </h1>
       </a>
     </div>
-    <ul>
+
+    {{! Pt. 3 Let's start by removing the list of songs we have in the application template – 
+    we'll move that list to its dedicated page we've just created.
+    }}
+    {{!-- <ul>
       {{#each
         (array
           (hash title="Black Dog" band="Led Zeppelin" rating=3)
@@ -67,6 +71,16 @@ we are creating on the DOM
           <span class="float-right">{{song.rating}}</span>
         </li>
       {{/each}}
-    </ul>
+    </ul> --}}
+
+    {{! add a navigation header that contains two links to navigate between the routes. 
+    This should be added to the application template, so that it's present on all pages of the application. 
+    Ember has a built-in way to go to routes of the application: the LinkTo component. }}
+
+    <nav class="h-8 flex items-center mb-8">
+      <LinkTo class="hover:text-gray-500" @route="bands">Bands</LinkTo>
+      <LinkTo class="hover:text-gray-500 ml-4" @route="songs">Songs</LinkTo>
+    </nav>
+    {{outlet}}
   </div>
 </div>

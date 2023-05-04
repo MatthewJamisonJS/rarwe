@@ -1,0 +1,8 @@
+{{page-title "Bands"}}
+{{! In the template belonging to the route,
+bands.hbs we can access the array returned from the model hook as @model}}
+<ul>
+  {{#each @model as |band|}}
+    <li>{{band.name}}</li>
+  {{/each}}
+</ul>
