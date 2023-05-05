@@ -1,0 +1,29 @@
+{{page-title "Bands"}}
+{{! In the template belonging to the route,
+bands.hbs we can access the array returned from the model hook as @model}}
+{{!-- <ul>
+  {{#each @model as |band|}}
+    <li>{{band.name}}</li>
+  {{/each}}
+</ul> --}}
+
+{{!-- Pt. 4 {Nested Routing}
+Ember has a very neat way of supporting nested (or layered) UIs.
+If you define an {{outlet}} in the template of a route, it creates a slot for the
+children routes to render their content in. We'll leverage this to
+create our band-songs master-detail view. --}}
+
+<div class="w-1/3 px-2">
+  <ul class="pl-2 pr-8">
+    {{#each @model as |band|}}
+      <li class="mb-2">
+        <LinkTo @route="bands.band.songs" @model={{band.id}}>
+          {{band.name}}
+        </LinkTo>
+      </li>
+    {{/each}}
+  </ul>
+</div>
+<div class="w-2/3 px-2">
+  {{outlet}}
+</div>

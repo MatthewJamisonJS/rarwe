@@ -1,4 +1,4 @@
-/* To enable using the small Tailwind "utility rules" in our app 
+/* To enable using the small Tailwind "utility rules" in our app
 we have to add a handful of Tailwind directives in our main stylesheet */
 @tailwind base;
 @tailwind components;
