@@ -3,7 +3,7 @@
 
 {{page-title "Rock & Roll with Octane"}}
 
-{{! PT. 1 }}
+{{! PT. 1 Getting it Started }}
 
 {{! Created a quick update to visibly see an idea of what
 we are creating on the DOM
@@ -37,7 +37,7 @@ we are creating on the DOM
   {{/each}}
 </ul> --}}
 
-{{! PT. 2 }}
+{{! PT. 2 Setting up Templates and data bindings }}
 
 {{! We'll add a header and a container element for the whole app }}
 
@@ -52,7 +52,8 @@ we are creating on the DOM
       </a>
     </div>
 
-    {{! Pt. 3 Let's start by removing the list of songs we have in the application template – 
+    {{! Pt. 3 Divying by Routes
+    Let's start by removing the list of songs we have in the application template –
     we'll move that list to its dedicated page we've just created.
     }}
     {{!-- <ul>
@@ -77,10 +78,13 @@ we are creating on the DOM
     This should be added to the application template, so that it's present on all pages of the application. 
     Ember has a built-in way to go to routes of the application: the LinkTo component. }}
 
-    <nav class="h-8 flex items-center mb-8">
-      <LinkTo class="hover:text-gray-500" @route="bands">Bands</LinkTo>
-      <LinkTo class="hover:text-gray-500 ml-4" @route="songs">Songs</LinkTo>
-    </nav>
-    {{outlet}}
+    {{! Pt. 4 Nesting Routes }}
+
+    {{! Since we are changing the routing of the application, we need to rething
+    the current container markups and <nav> tags }}
+
+    <div class="flex flex-wrap -mx-2">
+      {{outlet}}
+    </div>
   </div>
 </div>
