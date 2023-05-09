@@ -1,0 +1,19 @@
+{{! we replaced the X's and O's with the star icon from the fortawesome
+packages -D @fortawesome/ember-fontawesome/@fortawesome/free-regular-svg-icons @fortawesome/free-solid-
+svg-icons}}
+{{#if (has-block)}}
+  {{yield this.stars}}
+{{else}}
+  {{#each this.stars as |star|}}
+    {{! "on" adds an event listener to the element it is invoked on.
+It takes the event type as its first argument and the handler function as the second one.
+
+Next, the fn helper can take an arbitrary number of arguments at call time,
+which will be prepended(added to the beginning of) to the list of arguments 
+the resulting function is called with
+ }}
+    <button type="button" {{on "click" (fn @onUpdate star.rating)}}>
+      <FaIcon @icon="star" @prefix={{if star.full "fas" "far"}} />
+    </button>
+  {{/each}}
+{{/if}}

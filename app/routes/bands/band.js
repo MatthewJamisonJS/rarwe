@@ -18,3 +18,4 @@ export default class BandsBandRoute extends Route {
     return bands.find((band) => band.id === params.id);
   }
 }
+// FIXED ROUTING ISSUE/ERROR
