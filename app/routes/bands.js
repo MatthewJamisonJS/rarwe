@@ -1,29 +1,26 @@
 import Route from '@ember/routing/route';
 import { tracked } from '@glimmer/tracking';
 
-/*define a model method (commonly known as the model hook) on your route
-and Ember makes the value you return from this method available to the template as @model.
-*/
-
-/* Part 4 {Nested Routes} adapting the code to the relationship between bands and songs */
-
-class Band {
+/*gotta export Band to use on the controller  */
+export class Band {
   @tracked name;
+  @tracked songs;
+
   constructor({ id, name, songs }) {
     this.id = id;
     this.name = name;
     this.songs = songs;
   }
 }
-/* Defining the classes of Song & Band */
-class Song {
+/* setting the band property on the controller by exporting
+by using setupController in the bands/band/songs route */
+export class Song {
   constructor({ title, rating, band }) {
     this.title = title;
     this.rating = rating ?? 0;
     this.band = band;
   }
 }
-/* updating the data that is to be exported for bands & songs */
 export default class BandsRoute extends Route {
   model() {
     let blackDog = new Song({
