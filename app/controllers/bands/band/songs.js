@@ -1,14 +1,13 @@
 import Controller from '@ember/controller';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
-import { Song } from 'rarwe/routes/bands';
+import Song from 'rarwe/models/song';
+import { service } from '@ember/service';
 
 export default class BandsBandSongsController extends Controller {
   @tracked showAddSong = true;
   @tracked title = '';
-  /* the {action} decorator correctly binds the context of the template to the backing class.
-  It makes sure that when we use this.saveSong in the template, it refers to the instance in the
-  controller.*/
+  @service catalog;
 
   get hasNoTitle() {
     return !this.title;
@@ -20,14 +19,9 @@ export default class BandsBandSongsController extends Controller {
   }
   @action
   saveSong() {
-    /*the default implementation of the model hook is to return the model of the parent route.
-  Since we need the band as the model, that suits us perfectly. Now, to adjust the controller
-  and template */
-    // let song = new Song({ title: this.title, band: this.band });
-    // this.band.songs = [...this.band.songs, song];
     let song = new Song({ title: this.title, band: this.model });
     this.model.songs = [...this.model.songs, song];
-
+    this.catalog.add('song', song);
     this.title = '';
     this.showAddSong = true;
   }
