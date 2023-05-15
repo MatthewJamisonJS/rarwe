@@ -1,24 +1,38 @@
 import Route from '@ember/routing/route';
+import { service } from '@ember/service';
 
 export default class BandsBandSongsRoute extends Route {
+  @service catalog;
+
+  async model() {
+    let band = this.modelFor('bands.band');
+    // let url = band.relationships.songs;
+    // let response = await fetch(url);
+    // let json = await response.json();
+    // let songs = [];
+    // for (let item of json.data) {
+    //   let { id, attributes, relationships } = item;
+    //   let rels = {};
+    //   for (let relationshipName in relationships) {
+    //     rels[relationshipName] = relationships[relationshipName].links.related;
+    //   }
+    //   let song = new Song({ id, ...attributes }, rels);
+    //   songs.push(song);
+    //   this.catalog.add('song', song);
+    // }
+    // band.songs = songs;
+    await this.catalog.fetchRelated(band, 'songs');
+    return band;
+  }
+  /* This queries the url to retrieve the songs
+
+  *UPDATE - we updated the model to utilize the fetchRelated method from the catalog
+  service.
+
+    */
+
   resetController(controller) {
     controller.title = '';
     controller.showAddSong = true;
   }
-  // model() {
-  //   let band = this.modelFor('bands.band');
-  //   return band.songs;
-  // }
-  // /*The method gets passed to the controller as the first param
-  // and the resolved model as the second one. super is the default implementation that takes care of
-  // setting the model property on the controller*/
-  // setupController(controller) {
-  //   super.setupController(...arguments);
-  //   controller.set('band', this.modelFor('bands.band'));
-  // }
-  /*Since we know we also need to get hold of the band we create the songs for,
-  it's easiest to change the route so that it returns the band object and loop through
-  @model.songs in the template:
-
-  */
 }

@@ -1,61 +1,25 @@
 import Route from '@ember/routing/route';
-import { tracked } from '@glimmer/tracking';
 import { service } from '@ember/service';
-import Song from 'rarwe/models/song';
-import Band from 'rarwe/models/band';
-/*Removing the domain models definitions from the route and importing them */
 
 export default class BandsRoute extends Route {
   @service catalog;
+  /*This way we can now extract the relationships for each band
+  Each relationship is under a nested key in the response below
+  'relationships.<relationshipName>.link.related'
 
+  What's happening underneath is the code is assigning each relationship
+  link under the 'relationships' attribute of the Band model instances. Making 'songs'
+  found at 'relationships.songs'
+  */
   model() {
-    let blackDog = new Song({
-      title: 'Black Dog',
-      rating: 3,
-    });
-    let yellowLedbetter = new Song({
-      title: 'Yellow Ledbetter',
-      rating: 4,
-    });
-    let pretender = new Song({
-      title: 'The Pretender',
-      rating: 2,
-    });
-    let daughter = new Song({
-      title: 'Daughter',
-      band: 'Pearl Jam',
-      rating: 5,
-    });
-    let ledZeppelin = new Band({
-      id: 'led-zeppelin',
-      name: 'Led Zeppelin',
-      songs: [blackDog],
-    });
-    let pearlJam = new Band({
-      id: 'pearl-jam',
-      name: 'Pearl Jam',
-      songs: [yellowLedbetter, daughter],
-    });
-    let fooFighters = new Band({
-      id: 'foo-fighters',
-      name: 'Foo Fighters',
-      songs: [pretender],
-    });
-    blackDog.band = ledZeppelin;
-    yellowLedbetter.band = pearlJam;
-    daughter.band = pearlJam;
-    pretender.band = fooFighters;
-
-    this.catalog.add('song', blackDog);
-    this.catalog.add('song', yellowLedbetter);
-    this.catalog.add('song', daughter);
-    this.catalog.add('song', pretender);
-
-    this.catalog.add('band', ledZeppelin);
-    this.catalog.add('band', pearlJam);
-    this.catalog.add('band', fooFighters);
-    return this.catalog.bands;
+    return this.catalog.fetchAll('bands');
+    /* REFACTOR, utilized the function fetchAll() created on the catalog*/
   }
+  /*Now that we have armed the async to link to fetch data for the 'songs' relationship
+we can now update the 'model' hook of the bands.band.songs route  */
 }
-/*We'll have to return the bands in the catalog so that we can keep
-"eaching through" @model in the template */
+
+/*Using REST conventions the list of bands needs to be retrieved
+by starting ember with the proxy option, we launched Ember CLI that takes care of it
+fetch returns a promise and the data in the response can be had by calling its json method
+(which also returns a promise)*/

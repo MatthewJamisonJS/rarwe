@@ -3,15 +3,13 @@
 {{#if @model.songs.length}}
   <ul>
     {{#each @model.songs as |song|}}
-      {{! When we now create a new song, it doesn't appear in the list.
-      The song is added to this.model.songs where the model is a Band object }}
-      {{! However, the songs property is not tracked so Ember's templating engine doesn't re-render the @model.songs
-      chunk in the template
-      We fix this by tracking songs in the parent directory bands }}
       <li class="mb-2">
         {{song.title}}
         <span class="float-right">
-          <StarRating @rating={{song.rating}} @onUpdate={{set song "rating"}} />
+          <StarRating
+            @rating={{song.rating}}
+            @onUpdate={{fn this.updateRating song}}
+          />
         </span>
       </li>
     {{/each}}
@@ -54,6 +52,7 @@
     <button
       type="button"
       class="ml-2 px-4 p-2 rounded bg-white border border-bg-purple-600 shadow-md text-purple-600 hover:shadow-lg"
+      {{on "click" this.cancel}}
     >
       Cancel
     </button>
