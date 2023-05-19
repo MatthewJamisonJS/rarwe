@@ -50,10 +50,11 @@ is the same as this.route('bands', { path: 'bands' }, only shorter.
  */
 
 Router.map(function () {
-  this.route('bands', function () {
-    this.route('band', { path: ':id' }, function () {
+  this.route('bands', { path: '/' }, function () {
+    this.route('band', { path: 'bands/:id' }, function () {
       this.route('songs');
+      this.route('details');
     });
-    this.route('new');
+    this.route('new', { path: 'bands/new' });
   });
 });

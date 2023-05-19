@@ -1,88 +1,14 @@
-{{! There's also a page-title helper call, which was put into the template when Ember CLI generated the project.
- It sets the document title that is shown in the browser tab. }}
-
 {{page-title "Rock & Roll with Octane"}}
-
-{{! PT. 1 Getting it Started }}
-
-{{! Created a quick update to visibly see an idea of what
-we are creating on the DOM
- }}
-{{! The array helper takes a varying number of arguments and creates an array that 
-  contains them.
-   }}
-
-{{! The hash helper creates a POJO (Plain Old JavaScript Object) 
-  in template-land.
- }}
-
-{{! Putting these together, the song block variable will loop through each 
- object created by the hash helper and render a list item for each of them. }}
-
-{{! <ul> }}
-{{!-- {{#each
-    (array
-      (hash title="Black Dog" band="Led Zeppelin" rating=3)
-      (hash title="Yellow Ledbetter" band="Pearl Jam" rating=4)
-      (hash title="The Pretender" band="Foo Fighters" rating=2)
-    )
-    as |song|
-  }}
-    <li>
-      {{song.title}}
-      by
-      {{song.band}}
-      ({{song.rating}})
-    </li>
-  {{/each}}
-</ul> --}}
-
-{{! PT. 2 Setting up Templates and data bindings }}
-
-{{! We'll add a header and a container element for the whole app }}
-
 <div class="bg-blue-900 text-gray-100 p-8 h-screen">
   <div class="mx-auto mb-4">
     <div class="h-12 flex items-center mb-4 border-b-2">
-      <a href="#">
+      <LinkTo @route="bands">
         <h1 class="font-bold text-2xl">
           Rock & Roll
           <span class="font-normal">with Octane</span>
         </h1>
-      </a>
+      </LinkTo>
     </div>
-
-    {{! Pt. 3 Divying by Routes
-    Let's start by removing the list of songs we have in the application template –
-    we'll move that list to its dedicated page we've just created.
-    }}
-    {{!-- <ul>
-      {{#each
-        (array
-          (hash title="Black Dog" band="Led Zeppelin" rating=3)
-          (hash title="Yellow Ledbetter" band="Pearl Jam" rating=4)
-          (hash title="The Pretender" band="Foo Fighters" rating=2)
-        )
-        as |song|
-      }}
-        <li class="leading-loose">
-          {{song.title}}
-          by
-          {{song.band}}
-          <span class="float-right">{{song.rating}}</span>
-        </li>
-      {{/each}}
-    </ul> --}}
-
-    {{! add a navigation header that contains two links to navigate between the routes. 
-    This should be added to the application template, so that it's present on all pages of the application. 
-    Ember has a built-in way to go to routes of the application: the LinkTo component. }}
-
-    {{! Pt. 4 Nesting Routes }}
-
-    {{! Since we are changing the routing of the application, we need to rething
-    the current container markups and <nav> tags }}
-
     <div class="flex flex-wrap -mx-2">
       {{outlet}}
     </div>

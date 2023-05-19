@@ -3,11 +3,12 @@ import { tracked } from '@glimmer/tracking';
 export default class Band {
   @tracked name;
   @tracked songs;
-  constructor({ id, name, songs }, relationships = {}) {
+  constructor({ id, name, songs, description }, relationships = {}) {
     this.id = id;
     this.name = name;
     this.songs = songs || [];
     this.relationships = relationships;
+    this.description = description;
   }
 }
 /*In order to have each band's songs properly loaded to render the 'songs' template,
