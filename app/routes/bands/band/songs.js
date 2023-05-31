@@ -1,5 +1,7 @@
 import Route from '@ember/routing/route';
 import { service } from '@ember/service';
+// import wait from 'rarwe/utils/wait'; Deleting this since we want the wait function to simulate
+//network latency
 
 export default class BandsBandSongsRoute extends Route {
   @service catalog;
