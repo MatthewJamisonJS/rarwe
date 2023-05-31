@@ -2,7 +2,7 @@ import Controller from '@ember/controller';
 import { tracked } from '@glimmer/tracking';
 import { action } from '@ember/object';
 import { service } from '@ember/service';
-import fetch from 'fetch';
+import { capitalize } from 'rarwe/helpers/capitalize';
 
 export default class BandsBandSongsController extends Controller {
   @tracked showAddSong = true;
@@ -15,6 +15,11 @@ export default class BandsBandSongsController extends Controller {
   }
 
   @service catalog;
+
+  get newSongPlaceholder() {
+    let bandName = this.model.name;
+    return `New ${capitalize([bandName])} song`;
+  }
 
   get matchingSongs() {
     let searchTerm = this.searchTerm.toLowerCase();
