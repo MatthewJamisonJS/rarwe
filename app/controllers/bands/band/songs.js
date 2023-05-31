@@ -7,11 +7,47 @@ import fetch from 'fetch';
 export default class BandsBandSongsController extends Controller {
   @tracked showAddSong = true;
   @tracked title = '';
-  @service catalog;
+  @tracked sortBy = 'title';
+  @tracked searchTerm = '';
 
   get hasNoTitle() {
     return !this.title;
   }
+
+  @service catalog;
+
+  get matchingSongs() {
+    let searchTerm = this.searchTerm.toLowerCase();
+    return this.model.songs.filter((song) => {
+      return song.title.toLowerCase().includes(searchTerm);
+    });
+  }
+
+  /*Defining a sortedSongs property that will hold the sorted list of songs derived from this.model.songs
+   */
+
+  get sortedSongs() {
+    let sortBy = this.sortBy;
+    let isDescendingSort = false;
+    if (sortBy.charAt(0) === '-') {
+      sortBy = this.sortBy.slice(1);
+      isDescendingSort = true;
+    }
+
+    return this.matchingSongs.sort((song1, song2) => {
+      if (song1[sortBy] < song2[sortBy]) {
+        return isDescendingSort ? 1 : -1;
+      }
+      if (song1[sortBy] > song2[sortBy]) {
+        return isDescendingSort ? -1 : 1;
+      }
+      return 0;
+    });
+  }
+
+  /*The sort function in JavaScript takes a "compare" function. If the first item is smaller, it needs to return a negative value.
+  If the second, a positive value. If they are equal, zero. Also, sort mutates the array it's called on, so to be safe,
+  we make a copy. (It also returns the sorted array.)*/
 
   @action
   updateTitle(event) {
@@ -27,73 +63,15 @@ export default class BandsBandSongsController extends Controller {
     );
   }
 
-  /*We refactored the below action to utilize the function in catalog.create*/
-  // @action
-  // async saveSong() {
-  //   let payload = {
-  //     data: {
-  //       type: 'songs',
-  //       attributes: { title: this.title },
-  //       relationships: {
-  //         band: {
-  //           data: {
-  //             id: this.model.id,
-  //             type: 'bands',
-  //           },
-  //         },
-  //       },
-  //     },
-  //   };
-  //   let response = await fetch('/songs', {
-  //     method: 'POST',
-  //     headers: { 'Content-Type': 'application/vnd.api+json' },
-  //     body: JSON.stringify(payload),
-  //   });
-  //   let json = await response.json();
-  //   let { id, attributes, relationships } = json.data;
-  //   let rels = {};
-  //   for (let relationshipName in relationships) {
-  //     rels[relationshipName] = relationships[relationshipName].links.related;
-  //   }
-  //   let song = new Song({ id, ...attributes }, rels);
-  //   this.catalog.add('song', song);
-  //   this.model.songs = [...this.model.songs, song];
-  //   this.title = '';
-  //   this.showAddSong = true;
-  // }
-  /*Resembles the same thing we did in controllers/band/new.js
-   We are creating a proper band relationship from the start.
+  @action
+  updateSearchTerm(event) {
+    this.searchTerm = event.target.value;
+  }
 
-   We are doing what's called "resource linkage" (JSON:API vocab) by
-  specifying the id and type.
-
-  We know that since we duplicated a lot of code throughout that we will be refactoring
-  soon. But let's convert back-end operations of updating song ratings first. We're going
-  to do this by writing an action handler function
-   */
-
-  /*In similar fashion, we created an updateRating method on the service catalog. We are refactoring
-  the code below to utilize these changes*/
   @action
   async updateRating(song, rating) {
     song.rating = rating;
     this.catalog.update('song', song, { rating });
-    // let payload = {
-    //   data: {
-    //     id: song.id,
-    //     type: 'songs',
-    //     attributes: {
-    //       rating,
-    //     },
-    //   },
-    // };
-    // await fetch(`/songs/${song.id}`, {
-    //   method: 'PATCH',
-    //   headers: {
-    //     'Content-Type': 'application/vnd.api+json',
-    //   },
-    //   body: JSON.stringify(payload),
-    // });
   }
   @action
   cancel() {
