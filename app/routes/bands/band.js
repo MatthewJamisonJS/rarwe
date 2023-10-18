@@ -1,20 +1,27 @@
 import Route from '@ember/routing/route';
+import { service } from '@ember/service';
 
 export default class BandsBandRoute extends Route {
+  @service catalog;
+  // @service router;
+
   model(params) {
-    // This route was generated with a dynamic segment. Implement data loading
-    // based on that dynamic segment here in the model hook.
-    // return params;
-
-    /* {Pt. 4 Nested Routing} Since we want the individual band information
-    to populate once they're selected */
-
-    /* modelFor fetches the model of a parent route that had already been activated. */
-    /* find() returns the value of the first element that passes a test
-    - (band) => band.id === params.id  [passes the band id that matches params.id into (band)]
-    */
-
-    let bands = this.modelFor('bands');
-    return bands.find((band) => band.id === params.id);
+    return this.catalog.find('band', (band) => band.id === params.id);
   }
+  /*Providing a lookup in our catalog by switching the data lookups from the model hook of roots */
+  /*   redirect(band) {
+    if (band.description) {
+      this.router.transitionTo('bands.band.details');
+    } else {
+      this.router.transitionTo('bands.band.songs');
+    }
+  }
+  /*Making the redirection in bands.band route based on whether the band has a description or not
+
+  However, we changed this because the way we set up the LinkTo(<LinkTo @route="bands.band") in the HBS
+  will make ember transition from bands.band.details to bands.band.index
+  But, since we don't need this transition to pass by the common parent route bands.band to complete
+  the transition, the redirect code we wrote is not executed.
+  
+  so we generated bands/band/index in route and cut the commented code out and pasted there.*/
 }
